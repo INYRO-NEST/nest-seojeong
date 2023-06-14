@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { ArticleEntity } from "./article.entity";
+import { CommentEntity } from "./comment.entity";
 
 @Entity('User')
 export class UserEntity {
@@ -12,11 +14,17 @@ export class UserEntity {
     password: string;
     
     @CreateDateColumn({type: 'timestamp', nullable: true})
-    created_at: Date;
+    createdAt: Date;
     
     @UpdateDateColumn({type: 'timestamp', nullable: true})
-    updated_at: Date | null;
+    updatedAt: Date | null;
     
     @DeleteDateColumn({type: 'timestamp', nullable: true})
-    deleted_at : Date | null;
+    deletedAt : Date | null;
+
+    @OneToMany(() => ArticleEntity, (article) => article.user)
+    articles: ArticleEntity[];
+
+    @OneToMany(() => CommentEntity, (comment) =>comment.user)
+    comments: CommentEntity[];
 }
